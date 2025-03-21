@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -41,6 +42,9 @@ public class Professor {
 	@Column(name = "Degree")
 	private Degree degree;
 	
+	@OneToOne(mappedBy = "professor")//need to point which variable is with @JoinColumn
+	@ToString.Exclude
+	private Course course;
 	
 	public Professor(String inputName, String inputSurname, Degree inputDegree)
 	{

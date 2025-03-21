@@ -1,5 +1,5 @@
 package lv.venta.model.enums;
 
-public enum Degree {
+public enum Degree {bsc, mg, dr,other
 
 }
