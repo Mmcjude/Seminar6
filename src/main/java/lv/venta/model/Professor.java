@@ -26,7 +26,7 @@ public class Professor {
 	@Setter(value = AccessLevel.NONE)//will remove setter for id
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long pId;
+	private long pid;
 	
 	@Column(name = "Name")
 	@NotNull
