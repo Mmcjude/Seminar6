@@ -1,10 +1,18 @@
 package lv.venta.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -40,11 +48,15 @@ public class Professor {
 	
 	@NotNull
 	@Column(name = "Degree")
+	@Enumerated(EnumType.STRING)
 	private Degree degree;
 	
-	@OneToOne(mappedBy = "professor")//need to point which variable is with @JoinColumn
+	@ManyToMany
+	@JoinTable(name = "CourseProfessorTable", 
+	joinColumns = @JoinColumn(name = "PId"), 
+	inverseJoinColumns = @JoinColumn(name = "CId"))
 	@ToString.Exclude
-	private Course course;
+	private Collection<Course> courses = new ArrayList<Course>();
 	
 	public Professor(String inputName, String inputSurname, Degree inputDegree)
 	{
@@ -52,4 +64,14 @@ public class Professor {
 		setSurname(inputSurname);
 		setDegree(inputDegree);
 	}
+	
+	public void addCourse(Course inputCourse) {
+		if(inputCourse != null && !courses.contains(inputCourse))
+		{
+			courses.add(inputCourse);
+		}
+	}
+	
+	//TODO create removeCourse function
+	
 }

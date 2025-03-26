@@ -1,5 +1,6 @@
 package lv.venta.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import jakarta.persistence.Column;
@@ -8,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -45,20 +47,32 @@ public class Course {
 	@Column(name = "CreditPoints")
 	private int creditPoints;
 	
-	@OneToOne
-	@JoinColumn(name = "PId")//this will create a new column as FK
-	private Professor professor;
+	@ManyToMany(mappedBy = "courses")//need to point whitch variable is with @JoinTable
+	private Collection<Professor> professors = new ArrayList<Professor>();
 	
 	@OneToMany(mappedBy = "course")//need to point which variable is with @JoinColumn
 	@ToString.Exclude
 	private Collection<Grade> grades;
 	
 	
-	 public Course(String inputTitle, int inputCreditPoints, Professor inputProfessor)
+	 public Course(String inputTitle, int inputCreditPoints, Professor ... inputProfessors)
 	    {
 	    	setTitle(inputTitle);
 	    	setCreditPoints(inputCreditPoints);
-	    	setProfessor(inputProfessor);
+	    	for(Professor tempP : inputProfessors)
+	    	{
+	    		addProfessor(tempP);
+	    	}
 	    }
 
+	 
+	 public void addProfessor(Professor inputProfessor) {
+		 if(inputProfessor != null && !professors.contains(inputProfessor))
+		 {
+			 professors.add(inputProfessor);
+		 }
+	 }
+	 
+	 //TODO create removeProfessor function
+	 
 }
